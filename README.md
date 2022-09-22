@@ -8,8 +8,8 @@ A personal starter template for Node applications. Authentication and authorizat
 
 1. Install dependencies
 2. Create `.env` file at root with   
-  a. API_PORT:
-  b. PORT: (optional)
-  c. MONGO_URI: (optional) (Make sure a local db is running if not supplied)
-  d. DEBUG: (optional) ignorable for now
+  a. API_PORT:    
+  b. PORT: (optional)    
+  c. MONGO_URI: (optional) (Make sure a local db is running if not supplied)    
+  d. DEBUG: (optional) ignorable for now    
   e. TOKEN_KEY: for signing jwts. Use `openssl rand -hex 64` to generate a secure secret.   
