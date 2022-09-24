@@ -16,10 +16,9 @@ const verifyToken = async (req, res, next) => {
   }
 
   try {
-    console.log(config.TOKEN_KEY);
     const decoded = jwt.verify(token, config.TOKEN_KEY);
 
-    const user = await User.findOne({email: decoded.email});
+    const user = await User.findOne({username: decoded.username });
     if (!user.token) {
       return res.status(400).json({"error": "Not logged in!"});
     }

@@ -1,15 +1,39 @@
-# NodeJS + MongoDB starter template with authentication   
+# Fitoor 
 
-A personal starter template for Node applications. Authentication and authorization based on JWT build from the ground up. No external libraries except `jsonwebtoken`.   
+My personal one-stop solution for all journaling needs
 
-1. Change `model/user.js` as you deem fit. Critical fields are `email`, `password` and `token`.  
+Main blog 
+Aikea - film blog
+Mucus - introspective
+College life - /univ
 
-# How to run  
+## TODO: 
 
-1. Install dependencies
-2. Create `.env` file at root with   
-  a. API_PORT:    
-  b. PORT: (optional)    
-  c. MONGO_URI: (optional) (Make sure a local db is running if not supplied)    
-  d. DEBUG: (optional) ignorable for now    
-  e. TOKEN_KEY: for signing jwts. Use `openssl rand -hex 64` to generate a secure secret.   
+1. Uploading image 
+2. Parsing markdown text  
+
+**Functional first, then aesthetic**   
+
+# MODELS   
+
+0. USER
+first_name
+last_name
+username
+email
+password
+token
+
+1. POST
+
+title
+rawText
+type: TWEET, BLOG, ESSAY
+htmlText
+word_count
+[images]
+created_by
+last_updated
+created_at
+is_public
+likes

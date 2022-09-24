@@ -14,22 +14,22 @@ const initAuthentication = (app) => {
     // 4. If yes, generate token
     // 5. Attach token and send back
 
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!(email && password)) {
+    if (!(username && password)) {
       return res
         .status(400)
-        .json({ error: "Email and password are required!" });
+        .json({ error: "Username and password are required!" });
     }
     try {
-      const user = await User.findOne({ email: email.toLowerCase() });
+      const user = await User.findOne({ username: username });
 
       if (user) {
         if (await bcrypt.compare(password, user.password)) {
           const token = jwt.sign(
             {
               user_id: user._id,
-              email,
+              username,
             },
             process.env.TOKEN_KEY,
             {
@@ -44,12 +44,12 @@ const initAuthentication = (app) => {
         } else {
           return res
             .status(400)
-            .json({ error: "Invalid email / password combination!" });
+            .json({ error: "Invalid username / password combination!" });
         }
       } else {
         return res
           .status(400)
-          .json({ error: "No user with given email ID found!" });
+          .json({ error: "No user with given username found!" });
       }
     } catch (err) {
       console.error(err);
@@ -57,9 +57,9 @@ const initAuthentication = (app) => {
   });
 
   app.post("/logout", auth, async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ username });
       user.token = null;
       user.save();
       return res.status(200).json({ msg: "Logged out!" });
@@ -68,7 +68,7 @@ const initAuthentication = (app) => {
     }
   });
 
-  app.post("/register", async (req, res) => {
+  app.post("/signup", async (req, res) => {
     // Logic
     // 1. Verify if all data is correct
     // 2. Check if user still exists
@@ -77,34 +77,35 @@ const initAuthentication = (app) => {
     // 5. Send signed JWT with user object
 
     try {
-      const { first_name, last_name, email, password } = req.body;
+      const { first_name, last_name, username, email, password } = req.body;
 
-      if (!(email && password && first_name && last_name)) {
+      if (!(password && username)) {
         res.status(400).json({ error: "All inputs are required" });
       }
 
-      const oldUser = await User.findOne({ email });
+      const oldUser = await User.findOne({ username });
 
       if (oldUser) {
         return res
           .status(400)
           .json({
-            error: "Email is already taken. Try with a different email ID!",
+            error: "Username is already taken. Try with a different username!",
           });
       }
 
       const encryptedPassword = await bcrypt.hash(password, 10);
       const user = await User.create({
-        first_name,
-        last_name,
-        email: email.toLowerCase(),
+        first_name: first_name ? first_name : null,
+        last_name: last_name ? last_name : null,
+        email: email ? email.toLowerCase() : null,
+        username: username,
         password: encryptedPassword,
       });
 
       const token = jwt.sign(
         {
           user_id: user._id,
-          email,
+          username,
         },
         process.env.TOKEN_KEY,
         {
